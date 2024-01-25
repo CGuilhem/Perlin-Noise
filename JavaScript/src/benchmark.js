@@ -1,36 +1,27 @@
 const Benchmark = require('benchmark');
 
-// Importez votre classe NoiseGenerator depuis le fichier approprié
-const NoiseGenerator = require('./lib/NoiseGenerator');
+const suite = new Benchmark.Suite();
 
-// Création d'une instance de NoiseGenerator avec un seed
-var seed = Math.random() * 10000
-const myNoiseGenerator = new NoiseGenerator(seed);
+const gradients = new Array(256).fill(null).map(() =>
+    new Array(256).fill(null).map(() => {
+        const angle = Math.random() * 2.0 * Math.PI;
+        return [Math.cos(angle), Math.sin(angle)];
+    })
+);
 
-// Création d'un nouveau benchmark
-const suite = new Benchmark.Suite;
+let perlinTotalTime = 0;
 
-// Ajout de la fonction à tester
-suite.add('PerlinNoise Generation', function() {
-  // Appel de la méthode perlinNoise à tester
-  myNoiseGenerator.perlinNoise(1, 1);
-});
-suite.add('Noise Generation', function() {
-    myNoiseGenerator.noise(1, 1);
-});
-
-// Écoute des résultats du benchmark
-suite
-  .on('cycle', function(event) {
-    console.log(String(event.target)); // Affiche le résultat du cycle
-    console.log(`Temps d'exécution: ${event.target.times.elapsed.toFixed(6)} s`);
+suite.add('perlin', function () {
+    const startTime = performance.now();
+    perlin(0.5, 0.5, gradients);
+    const endTime = performance.now();
+    perlinTotalTime += endTime - startTime;
   })
-  .on('complete', function() {
-    console.log('Résultats du benchmark :');
-    for (let i = 0; i < this.length; i++) {
-      console.log(`${this[i].name}: ${this[i].hz} ops/sec ±${this[i].stats.rme.toFixed(2)}%`);
-    }
-  });
-
-// Exécution du benchmark
-suite.run();
+  .on('cycle', function (event) {
+    console.log(String(event.target));
+  })
+  .on('complete', function () {
+    console.log('Benchmark completed.');
+    console.log('Total time for perlin:', (perlinTotalTime / 1000).toFixed(3), 'seconds');
+  })
+  .run({ 'async': true });
