@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/png"
+	"image/jpeg"
 	"math"
 	"math/rand"
 	"os"
@@ -121,9 +121,9 @@ func main() {
 
 		wg.Wait()
 
-		file, _ := os.Create("perlin_noise_MAP.png")
+		file, _ := os.Create("perlin_noise_MAP.jpeg")
 		defer file.Close()
-		png.Encode(file, img)
+		jpeg.Encode(file, img, &jpeg.Options{Quality: 80})
 	} else {
 		img := image.NewGray(image.Rect(0, 0, imageWidth, imageHeight))
 
@@ -135,9 +135,9 @@ func main() {
 
 		wg.Wait()
 
-		file, _ := os.Create("perlin_noise.png")
+		file, _ := os.Create("perlin_noise.jpeg")
 		defer file.Close()
-		png.Encode(file, img)
+		jpeg.Encode(file, img, &jpeg.Options{Quality: 80})
 	}
 
 	fmt.Println("Time elapsed: ", time.Since(start))
