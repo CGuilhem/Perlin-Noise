@@ -43,7 +43,7 @@ class NoiseGenerator{
     }
 
     getNoise(x, z){
-        return this.getNoiseValue(x + z * CHUNK_SIZE)
+        return this.getNoiseValue(x + z * 100)
     }
 
     cosineInterpolate(a, b, t){
@@ -64,3 +64,5 @@ class NoiseGenerator{
     }
 
 }
+
+module.exports = NoiseGenerator;
