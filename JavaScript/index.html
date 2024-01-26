@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Press+Start+2P&display=swap');
+      </style>
+    <title>Perlin Noise</title>
+</head>
+<body>
+    <header>
+        <h1>Perlin Noise Generator</h1>
+        <button id="generate-button">AGAIN !!</button>
+    </header>
+    <div id="map"></div>
+    <script type="text/javascript">
+        document.getElementById('generate-button').addEventListener('click', () => {
+            fetch('http://10.101.5.62:8080/image')
+                .then(response => response.blob())
+                .then(blob => {
+                    if(document.querySelector('img')) {
+                        document.getElementById('map').removeChild(document.querySelector('img'))
+                    }
+                    const imgUrl = URL.createObjectURL(blob);
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imgUrl;
+
+                    document.getElementById('map').appendChild(imgElement);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la requête fetch :', error);
+                });
+        });
+    </script>
+</body>
+</html>
