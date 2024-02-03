@@ -88,6 +88,8 @@ This project is a Perlin noise generator written in Go. It includes several modu
    cd Perlin-Noise
    cd JavaScript
    npm i
+   npm i pngjs
+   npm i benchmark
    ```
 3. **Run front-end application**
    ```sh
